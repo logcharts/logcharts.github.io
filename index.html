@@ -1,1 +1,57 @@
-hahahaha
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>一个 ECharts 实例</title>
+    <!-- 引入 echarts.js -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.1.2/echarts.common.min.js"></script>
+</head>
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="width: 600px;height:400px;"></div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+    option = {
+        title: {
+            text: '某站点用户访问来源',
+            subtext: '纯属虚构',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+        },
+        series: [
+            {
+                name: '访问来源',
+                type: 'pie',
+                radius: '50%',
+                data: [
+                    {value: 1048, name: '搜索引擎'},
+                    {value: 735, name: '直接访问'},
+                    {value: 580, name: '邮件营销'},
+                    {value: 484, name: '联盟广告'},
+                    {value: 300, name: '视频广告'}
+                ],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+</body>
+</html>
