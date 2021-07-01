@@ -1,57 +1,290 @@
 <!DOCTYPE html>
 <html>
+<style>
+    html,body{
+        height: 100%;
+    }
+    #rawDataWindow {
+        position: absolute;
+        top: 5%;
+        left: 5%;
+        width: 60%;
+        max-width: 90%;
+        height: 40%;
+        max-width: 90%;
+        border: black 1px solid;
+        z-index: 100000;
+        padding: 5px 10px 40px 5px;
+        background: whitesmoke;
+    }
+    #rawDataInput {
+        width: 100%;
+        height: 100%;
+    }
+    #background{
+        width: 100%;
+        height: 100%;
+        border: red 1px solid;
+        position: absolute;
+    }
+</style>
 <head>
     <meta charset="utf-8">
-    <title>一个 ECharts 实例</title>
+    <title>日志图标</title>
     <!-- 引入 echarts.js -->
     <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.1.2/echarts.common.min.js"></script>
+    <script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
 </head>
 <body>
+<div ng-app="myApp" ng-controller="myCtrl">
+<div id="background" ng-click="importCancel()">
+
+<button ng-click="openImportWindow()">导入导出</button>
+<div id="rawDataWindow" ng-show="rawDataWindowShow" onclick="event.stopPropagation()">
+    <textarea id="rawDataInput" ng-model="rawData"></textarea>
+    <button ng-click="importCopy()">复制</button>
+    <button ng-click="importConfirm()">导入</button>
+    <button ng-click="importCancel()">取消</button>
+
+</div>
+
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-<div id="main" style="width: 600px;height:400px;"></div>
-<script type="text/javascript">
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('main'));
-
-    // 指定图表的配置项和数据
-    option = {
-        title: {
-            text: '某站点用户访问来源',
-            subtext: '纯属虚构',
-            left: 'center'
-        },
-        tooltip: {
-            trigger: 'item'
-        },
-        legend: {
-            orient: 'vertical',
-            left: 'left',
-        },
-        series: [
-            {
-                name: '访问来源',
-                type: 'pie',
-                radius: '50%',
-                data: [
-                    {value: 1048, name: '搜索引擎'},
-                    {value: 735, name: '直接访问'},
-                    {value: 580, name: '邮件营销'},
-                    {value: 484, name: '联盟广告'},
-                    {value: 300, name: '视频广告'}
-                ],
-                emphasis: {
-                    itemStyle: {
-                        shadowBlur: 10,
-                        shadowOffsetX: 0,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                    }
-                }
-            }
-        ]
-    };
-
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
-</script>
+<div id="logPointCutPercent" style="width: 600px;height:400px;"></div>
+</div>
+</div>
 </body>
 </html>
+<script type="text/javascript">
+
+    // 日志入口占比
+    function setUpCharts() {
+        var logPointCutPercent = echarts.init(document.getElementById('logPointCutPercent'));
+        logPointCutPercentOption = {
+            title: {
+                text: '日志入口占比',
+                subtext: '',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                position:function(position){
+                    //获取容器的宽度
+                    var chartsWidth = $("#threadtrend").width();
+                    //判断悬停点落在容器的哪测
+                    if(position[0] < (chartsWidth/2)){
+                        position[0] = position[0];
+                    }else{
+                        position[0] = position[0] - 130;
+                    }
+                    return [position[0], position[1]];
+                },
+            },
+
+
+
+            series: [
+                {
+                    name: '日志大小',
+                    type: 'pie',
+                    radius: [20, 90],
+                    itemStyle: {
+                        borderColor: '#fff',
+                        borderWidth: 1
+                    },
+                    label: {
+                        alignTo: 'edge',
+                        formatter: '{name|{b}}\n{time|{c} ({d}%)}',
+                        minMargin: 5,
+                        edgeDistance: 10,
+                        lineHeight: 15,
+                        rich: {
+                            time: {
+                                fontSize: 10,
+                                color: '#999'
+                            }
+                        }
+                    },
+                    labelLine: {
+                        length: 15,
+                        length2: 0,
+                        maxSurfaceAngle: 80
+                    },
+
+
+                    data: []
+                }
+            ]
+        };
+        // 原始数据处理,只显示前7 和 其他的和
+        let sortedKeys = Object.keys(rawData).sort((a, b) => {
+            return rawData[b].charCount - rawData[a].charCount;
+        });
+        let othersCharCountSum = 0;
+        let index = 0;
+        for(var i=0;i<sortedKeys.length;i++){
+            let key = sortedKeys[i];
+            if (i<8){
+                logPointCutPercentOption.series[0].data.push({value: rawData[key].charCount, name: key});
+            }
+            else {
+                othersCharCountSum += rawData[key].charCount;
+            }
+        }
+        if(othersCharCountSum > 0){
+            logPointCutPercentOption.series[0].data.push({value: othersCharCountSum, name: '其他'});
+        }
+        logPointCutPercent.setOption(logPointCutPercentOption);
+    }
+
+    var rawData = {
+        "c.g.m.h.b.c.m.h.o.i.OrderManagerImpl.cancelOrder:(207)": {
+            "charCount": 481,
+            "lineCount": 1,
+            "times": 1
+        },
+        "c.g.m.h.b.c.m.h.s.i.ShiftCaseManagerImpl.listShiftCases:(103)": {
+            "charCount": 1264361,
+            "lineCount": 3592,
+            "times": 544
+        },
+        "c.g.m.h.b.c.m.h.o.i.OrderManagerImpl.order:(129)": {
+            "charCount": 285723,
+            "lineCount": 912,
+            "times": 114
+        },
+        "o.s.boot.web.support.ErrorPageFilter.handleCommittedResponse:(225)": {
+            "charCount": 16812,
+            "lineCount": 54,
+            "times": 9
+        },
+        "c.g.m.h.b.c.m.w.i.WeDoctorManagerImpl.listDoctorInfoBySearch:(146)": {
+            "charCount": 25530,
+            "lineCount": 58,
+            "times": 8
+        },
+        "c.g.m.h.b.c.m.h.o.i.OrderManagerImpl.deleteOrdersByOrderId:(157)": {
+            "charCount": 11395,
+            "lineCount": 29,
+            "times": 7
+        },
+        "c.g.m.h.b.c.m.h.s.i.ShiftCaseManagerImpl.getShiftCase:(131)": {
+            "charCount": 159578,
+            "lineCount": 441,
+            "times": 85
+        },
+        "c.g.m.h.b.c.m.h.e.u.ExtUserResponseUtil.convertResponseDO:(42)": {
+            "charCount": 511122,
+            "lineCount": 1429,
+            "times": 241
+        },
+        "c.w.f.m.logging.ModuleLoggingImpl.writeExceptionByError:(77)": {
+            "charCount": 3052347,
+            "lineCount": 27459,
+            "times": 220
+        },
+        "c.g.m.h.b.c.m.u.p.i.PatientManagerImpl.getUserPatientCart:(116)": {
+            "charCount": 2507180,
+            "lineCount": 7729,
+            "times": 1398
+        },
+        "c.g.m.h.b.c.m.h.o.i.OrderManagerImpl.cancelOrder:(220)": {
+            "charCount": 3899,
+            "lineCount": 14,
+            "times": 14
+        },
+        "c.g.m.h.w.c.cookie.CookieProcess.getUnionId:(60)": {
+            "charCount": 23325,
+            "lineCount": 115,
+            "times": 111
+        },
+        "c.g.m.h.b.c.m.u.impl.UserManagerImpl.listStatusByUserIds:(124)": {
+            "charCount": 632336,
+            "lineCount": 350,
+            "times": 70
+        },
+        "c.g.m.h.b.c.m.h.e.i.ExtProcessRuleManagerImpl.getExtUserRule:(46)": {
+            "charCount": 85670,
+            "lineCount": 241,
+            "times": 40
+        },
+        "c.g.m.h.b.c.m.c.HrsOrderStatusConsume.sendCoupon:(129)": {
+            "charCount": 157369,
+            "lineCount": 364,
+            "times": 71
+        },
+        "c.g.m.h.b.c.m.h.o.i.OrderManagerImpl.achieveVerifyCode:(498)": {
+            "charCount": 28856,
+            "lineCount": 63,
+            "times": 12
+        },
+        "c.g.m.h.b.c.m.h.d.i.DepartmentManagerImpl.getHospDeptPlatformSpecialInfo:(40)": {
+            "charCount": 16153,
+            "lineCount": 47,
+            "times": 9
+        },
+        "c.g.m.h.b.c.m.h.o.i.OrderManagerImpl.cancelOrder:(208)": {
+            "charCount": 31174,
+            "lineCount": 232,
+            "times": 1
+        },
+        "c.g.m.h.b.c.m.p.i.UserExtSafeManagerImpl.findByExtUserIdAndExtAppId:(42)": {
+            "charCount": 306480,
+            "lineCount": 664,
+            "times": 111
+        },
+        "c.g.m.h.b.c.m.h.o.i.OrderManagerImpl.cancelOrder:(221)": {
+            "charCount": 43018,
+            "lineCount": 113,
+            "times": 14
+        },
+        "c.g.m.h.b.c.m.s.s.i.CommerceRecSearchMangerImpl.parseResultJsons:(114)": {
+            "charCount": 10793,
+            "lineCount": 34,
+            "times": 5
+        },
+        "unknown:None": {
+            "charCount": 0,
+            "lineCount": 0,
+            "times": 0
+        },
+        "c.g.d.c.cluster.DitingTagInvoker.invoke$original$2eHCwhWc:(108)": {
+            "charCount": 125005218,
+            "lineCount": 948930,
+            "times": 4148
+        },
+        "c.w.f.m.l.dubbo.DubboLoggingFilter.invoke:(69)": {
+            "charCount": 58017479,
+            "lineCount": 456268,
+            "times": 2073
+        }
+    }
+
+    setUpCharts();
+
+
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function($scope) {
+        $scope.rawDataWindowShow = false;
+        $scope.openImportWindow = function() {
+            $scope.rawData = JSON.stringify(rawData);
+            $scope.rawDataWindowShow = true;
+            event.stopPropagation( );
+            return false;
+        };
+        $scope.importCopy = function() {
+            var input = document.getElementById("rawDataInput");
+            input.select(); // 选中文本
+            document.execCommand("copy");
+            alert("复制成功");
+        };
+        $scope.importConfirm = function() {
+            rawData = JSON.parse($scope.rawData);
+            $scope.rawDataWindowShow = false;
+            setUpCharts();
+        };
+        $scope.importCancel = function() {
+            $scope.rawDataWindowShow = false;
+        };
+
+    });
+</script>
