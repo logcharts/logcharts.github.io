@@ -81,10 +81,18 @@
         background-image: linear-gradient(to bottom,#C6EdFF 0,#66AdFc 100%);
         filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#C6EdFF', endColorstr='#66AdFc', GradientType=0);
         background-repeat: repeat-x;
-        margin-bottom: 10px;
         width: 100%;
     }
+    a {
+        color: #337ab7;
+        text-decoration: none;
+        background-color: transparent;
 
+    }
+    a:hover {
+        color: #007bff;
+        cursor: pointer;
+    }
 </style>
 <head>
     <meta charset="utf-8">
@@ -105,7 +113,8 @@
                      alt="Fork me on GitHub"></a>
         </div>
     </div>
-<button ng-click="openImportWindow()">导入导出</button>
+<button ng-click="openImportWindow()" style="margin: 10px">导入导出</button>
+    <a href="./LogFileAnalizer.py">分析脚本</a>
 <div id="rawDataWindow" ng-show="rawDataWindowShow" onclick="event.stopPropagation()">
     <textarea id="rawDataInput" ng-model="rawData"></textarea>
     <button ng-click="importCopy()">复制</button>
