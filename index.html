@@ -89,7 +89,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="x in pointCutDate">
+            <tr ng-repeat="x in pointCutData">
                 <td>{{ x.title }}</td>
                 <td>{{ x.charCount }}</td>
                 <td>{{ x.lineCount }}</td>
@@ -252,7 +252,7 @@
 
         $scope.init = function() {
             $scope.rawDataWindowShow = false;
-            $scope.pointCutDate = getSortedData(rawData.pointCutTable);
+            $scope.pointCutData = getSortedData(rawData.pointCutData);
             setUpCharts();
         };
         $scope.init();
