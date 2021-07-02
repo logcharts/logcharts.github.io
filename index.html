@@ -27,19 +27,19 @@
         position: absolute;
     }
     /* Border styles */
-    #pointCutTable thead, #pointCutTable tr {
+    table thead, table tr {
         border-top-width: 1px;
         border-top-style: solid;
         border-top-color: #a8bfde;
     }
-    #pointCutTable {
+    table {
         border-bottom-width: 1px;
         border-bottom-style: solid;
         border-bottom-color: #a8bfde;
     }
 
     /* Padding and font style */
-    #pointCutTable td, #pointCutTable th {
+    table td, table th {
         padding: 5px 10px;
         font-size: 12px;
         font-family: Verdana;
@@ -53,10 +53,23 @@
     #pointCutTable tr:nth-child(odd) {
         background: #FFF
     }
+    #basicInfo td:nth-child(odd) {
+        width: 10%;
+        min-width: 80px;
+    }
+    #basicInfo p {
+        text-align: center;
+        font-size: large;
+        font-weight: bold;
+        color: #444;
+    }
+    #basicInfo{
+        margin-bottom: 50px;
+    }
 </style>
 <head>
     <meta charset="utf-8">
-    <title>日志图标</title>
+    <title>日志图表</title>
     <!-- 引入 echarts.js -->
     <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.1.2/echarts.common.min.js"></script>
     <script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
@@ -73,6 +86,17 @@
     <button ng-click="importCancel()">取消</button>
 </div>
 
+    <div id="basicInfo" style="width: 1000px;">
+        <p>日志文件信息</p>
+        <table style="width:100%">
+            <tr>
+                <td>文件名称:</td><td>{{ basicInfo.fileName }}</td> <td>文件大小:</td><td>{{ basicInfo.fileSize }}</td>
+            </tr>
+            <tr>
+                <td>创建时间:</td><td>{{ basicInfo.fileCreateTime }}</td> <td>修改时间:</td><td>{{ basicInfo.fileModifyTime }}</td>
+            </tr>
+        </table>
+    </div>
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
     <div id="logPointCutPercent" style="width: 1000px;height:400px;"></div>
     <div id="logLevelPercent" style="width: 1000px;height:400px;"></div>
@@ -253,6 +277,7 @@
         $scope.init = function() {
             $scope.rawDataWindowShow = false;
             $scope.pointCutData = getSortedData(rawData.pointCutData);
+            $scope.basicInfo = rawData.basicInfo;
             setUpCharts();
         };
         $scope.init();
