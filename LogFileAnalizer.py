@@ -5,6 +5,8 @@ import json
 import sys
 import os
 import time
+import requests
+
 #支持的日志正则(分析工具会自动判断用哪个)
 patternList= (
     #module-hrs-register-web, 等
@@ -169,5 +171,11 @@ basicInfo={"fileName":filePath,
            "fileCreateTime":getFileCreateTime(filePath),
            "fileModifyTime":getFileModifyTime(filePath)}
 finalData={"basicInfo":basicInfo,"pointCutData":pointCutData,"hourData":hourData,"logLevelData":logLevelData}
-print(json.dumps(finalData))
+
+#上传数据
+headers = {'Content-Type':'application/json'}
+rep = requests.post(url='https://api.e5cm.xyz/weapp/cache/setTemp', data=json.dumps(finalData), headers=headers)
+print('Please visit the url below to check analyze result: \nhttps://logcharts.github.io?key='+rep.text)
+
+# print(json.dumps(finalData))
 

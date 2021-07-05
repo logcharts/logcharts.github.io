@@ -99,7 +99,7 @@
     <title>日志图表</title>
     <!-- 引入 echarts.js -->
     <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.1.2/echarts.common.min.js"></script>
-    <script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/angular.js/1.8.2/angular.min.js"></script>
 </head>
 <body>
 <div ng-app="myApp" ng-controller="myCtrl">
@@ -115,7 +115,7 @@
     </div>
 <button ng-click="openImportWindow()" style="margin: 10px">导入导出</button>
     <a href="./LogFileAnalizer.py">分析脚本</a>
-<div id="rawDataWindow" ng-show="rawDataWindowShow" onclick="event.stopPropagation()">
+<div id="rawDataWindow" ng-show="rawDataWindowShow" onclick="event.stopPropagation()" class="ng-hide">
     <textarea id="rawDataInput" ng-model="rawData"></textarea>
     <button ng-click="importCopy()">复制</button>
     <button ng-click="importConfirm()">导入</button>
@@ -163,6 +163,16 @@
 </body>
 </html>
 <script type="text/javascript">
+    function getQueryParam(variable)
+    {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+        }
+        return(false);
+    }
     function getPercentData(data){
         let result = [];
         // 原始数据处理,只显示前7 和 其他的和
@@ -206,7 +216,7 @@
         echarts.init(document.getElementById('hourBar')).setOption(getBarOption('小时统计', rawData.hourData));
     };
 
-    var rawData = {"hourData": {"2021-07-01 16": {"charCount": 77377778, "lineCount": 583854, "times": 13569}, "2021-07-01 15": {"charCount": 137297588, "lineCount": 1036883, "times": 22987}}, "basicInfo": {"fileModifyTime": "2021-07-01 16:31:27", "fileCreateTime": "2021-07-01 16:31:27", "fileSize": "204.73 MB", "fileName": "module-hrs-register-web.log"}, "logLevelData": {"INFO": {"charCount": 8742088, "lineCount": 25652, "times": 23596}, "WARN": {"charCount": 1643003, "lineCount": 2755, "times": 2755}, "ERROR": {"charCount": 204290275, "lineCount": 1592330, "times": 10205}}, "pointCutData": {"c.g.m.h.b.c.m.h.s.i.ShiftCaseManagerImpl.listShiftCases:(103)": {"charCount": 305380, "lineCount": 536, "times": 536}, "c.g.m.h.b.c.m.h.o.i.OrderManagerImpl.order:(129)": {"charCount": 29329, "lineCount": 103, "times": 103}, "c.g.m.h.b.c.m.u.impl.UserManagerImpl.verifyTokenAndGetInfo:(62)": {"charCount": 523, "lineCount": 1, "times": 1}, "c.g.m.h.w.c.o.o.OrderInfoProcess.convertOrderDetail:(704)": {"charCount": 702, "lineCount": 3, "times": 3}, "c.g.m.h.b.c.m.h.s.i.ShiftCaseManagerImpl.listShiftCasesForStd:(67)": {"charCount": 520, "lineCount": 1, "times": 1}, "c.g.m.h.w.c.o.o.OrderConfigController.checkBeforeOrder:(707)": {"charCount": 755110, "lineCount": 2170, "times": 2170}, "o.s.boot.web.support.ErrorPageFilter.handleCommittedResponse:(225)": {"charCount": 10340, "lineCount": 22, "times": 22}, "akka.remote.Remoting.apply$mcV$sp:(75)": {"charCount": 758, "lineCount": 2, "times": 2}, "c.g.m.h.b.c.m.h.o.i.OrderManagerImpl.deleteOrdersByOrderId:(157)": {"charCount": 3279, "lineCount": 11, "times": 11}, "c.g.m.h.b.c.m.h.s.i.ShiftCaseManagerImpl.getShiftCase:(131)": {"charCount": 58242, "lineCount": 172, "times": 172}, "c.g.m.h.b.c.m.h.e.u.ExtUserResponseUtil.convertResponseDO:(42)": {"charCount": 102226, "lineCount": 264, "times": 264}, "c.g.g.a.p.t.a.i.BizParamInterceptor.printLog:(153)": {"charCount": 2694, "lineCount": 6, "times": 6}, "c.w.f.m.h.c.i.HttpMethodManagerImpl.getPostMethod:(40)": {"charCount": 3529636, "lineCount": 17826, "times": 17826}, "c.g.m.h.b.c.m.h.o.i.OrderManagerImpl.cancelOrder:(220)": {"charCount": 2155, "lineCount": 8, "times": 8}, "c.g.m.h.w.c.o.s.SubmitOrderProcess.placeAnOrder:(530)": {"charCount": 16195, "lineCount": 79, "times": 79}, "akka.remote.Remoting.apply$mcV$sp:(69)": {"charCount": 2308, "lineCount": 28, "times": 2}, "c.g.m.h.b.c.m.u.p.i.PatientManagerImpl.getUserPatientCart:(116)": {"charCount": 319660, "lineCount": 1453, "times": 1453}, "c.g.hrs.biz.dubbo.asp.HrsHeadAspect.dubboContext:(97)": {"charCount": 1151819, "lineCount": 2325, "times": 2325}, "c.n.d.s.r.aws.ConfigClusterResolver.getClusterEndpoints:(43)": {"charCount": 2822, "lineCount": 17, "times": 17}, "c.g.m.h.w.c.cookie.CookieProcess.getUnionId:(60)": {"charCount": 22533, "lineCount": 111, "times": 111}, "c.g.m.h.b.c.m.h.o.i.OrderManagerImpl.achieveVerifyCode:(498)": {"charCount": 5695, "lineCount": 11, "times": 11}, "c.g.m.h.w.c.o.o.OrderConfigController.checkBeforeOrder:(706)": {"charCount": 1815339, "lineCount": 2170, "times": 2170}, "c.g.m.h.b.c.m.h.o.i.OrderManagerImpl.cancelOrder:(221)": {"charCount": 2152, "lineCount": 8, "times": 8}, "c.g.m.h.b.c.m.s.w.i.WeDoctorSearchManagerImpl.listWeDoctorUserInfoForPageQuery:(47)": {"charCount": 3631, "lineCount": 9, "times": 9}, "c.w.f.m.logging.ModuleLoggingImpl.writeExceptionByError:(77)": {"charCount": 2777892, "lineCount": 26948, "times": 223}, "c.g.m.h.b.c.m.h.e.i.ExtProcessRuleManagerImpl.getExtUserRule:(46)": {"charCount": 17396, "lineCount": 44, "times": 44}, "unknown:None": {"charCount": 0, "lineCount": 0, "times": 0}, "c.g.m.h.b.c.m.c.HrsOrderStatusConsume.sendCoupon:(129)": {"charCount": 24536, "lineCount": 63, "times": 63}, "c.g.d.c.cluster.DitingTagInvoker.invoke$original$2eHCwhWc:(108)": {"charCount": 135103698, "lineCount": 1050624, "times": 4649}, "c.g.m.h.w.c.o.s.SubmitOrderProcess.checkBeforeSubmit:(228)": {"charCount": 2268249, "lineCount": 668, "times": 668}, "c.w.f.m.logging.ModuleLoggingImpl.writeExceptionByInfo:(64)": {"charCount": 218481, "lineCount": 2078, "times": 22}, "c.g.m.h.b.c.m.h.d.i.DepartmentManagerImpl.getHospDeptPlatformSpecialInfo:(40)": {"charCount": 5109, "lineCount": 17, "times": 17}, "c.g.m.h.b.c.m.h.o.i.OrderManagerImpl.order:(118)": {"charCount": 61865, "lineCount": 470, "times": 2}, "c.g.m.h.b.c.m.p.i.UserExtSafeManagerImpl.findByExtUserIdAndExtAppId:(42)": {"charCount": 76532, "lineCount": 111, "times": 111}, "c.g.m.h.b.c.m.u.impl.UserManagerImpl.listStatusByUserIds:(124)": {"charCount": 419396, "lineCount": 55, "times": 55}, "c.g.m.h.b.c.m.s.s.i.CommerceRecSearchMangerImpl.parseResultJsons:(114)": {"charCount": 2324, "lineCount": 6, "times": 6}, "c.g.m.h.b.c.m.c.HrsOrderStatusConsume.doConsumeMessage:(85)": {"charCount": 486795, "lineCount": 419, "times": 419}, "c.g.m.h.b.c.m.w.i.WeDoctorManagerImpl.listDoctorInfoBySearch:(146)": {"charCount": 2025, "lineCount": 9, "times": 9}, "RocketmqRemoting.info:(95)": {"charCount": 1110, "lineCount": 7, "times": 7}, "c.g.m.h.w.c.o.s.SubmitOrderProcess.placeAnOrder:(494)": {"charCount": 131227, "lineCount": 627, "times": 627}, "c.w.f.m.l.dubbo.DubboLoggingFilter.invoke:(69)": {"charCount": 64935683, "lineCount": 511255, "times": 2324}}}
+    var rawData = {"hourData":{"2021-07-01 11":{"charCount":17377778,"lineCount":18854,"times":1569},"2021-07-01 12":{"charCount":27377778,"lineCount":583854,"times":1356},"2021-07-01 13":{"charCount":37377778,"lineCount":583854,"times":3569},"2021-07-01 14":{"charCount":37377778,"lineCount":583854,"times":129},"2021-07-01 15":{"charCount":27377778,"lineCount":583854,"times":135},"2021-07-01 16":{"charCount":67297588,"lineCount":1036883,"times":287}},"basicInfo":{"fileModifyTime":"2021-07-01 16:31:27","fileCreateTime":"2021-07-01 16:31:27","fileSize":"204.73 MB","fileName":"演示文件.log"},"logLevelData":{"INFO":{"charCount":8742088,"lineCount":25652,"times":23596},"WARN":{"charCount":1643003,"lineCount":2755,"times":2755},"ERROR":{"charCount":204290275,"lineCount":1592330,"times":10205}},"pointCutData":{"com.my.test.ProductManagerImpl.listProducts:(103)":{"charCount":305380,"lineCount":536,"times":536},"com.my.test.OrderManagerImpl.order:(129)":{"charCount":29329,"lineCount":103,"times":103},"com.my.test.impl.UserManagerImpl.verifyTokenAndGetInfo:(62)":{"charCount":523,"lineCount":1,"times":1},"com.my.test.OrderInfoProcess.convertOrderDetail:(704)":{"charCount":702,"lineCount":3,"times":3},"com.my.test.ProductManagerImpl.listProductsForStd:(67)":{"charCount":520,"lineCount":1,"times":1},"com.my.test.OrderConfigController.checkBeforeOrder:(707)":{"charCount":755110,"lineCount":2170,"times":2170},"o.s.boot.web.support.ErrorPageFilter.handleCommittedResponse:(225)":{"charCount":10340,"lineCount":22,"times":22},"akka.remote.Remoting.apply$mcV$sp:(75)":{"charCount":758,"lineCount":2,"times":2},"com.my.test.OrderManagerImpl.deleteOrdersByOrderId:(157)":{"charCount":3279,"lineCount":11,"times":11},"com.my.test.ProductManagerImpl.getProduct:(131)":{"charCount":58242,"lineCount":172,"times":172},"com.my.test.ExtUserResponseUtil.convertResponseDO:(42)":{"charCount":102226,"lineCount":264,"times":264},"com.my.test.BizParamInterceptor.printLog:(153)":{"charCount":2694,"lineCount":6,"times":6},"com.my.test.HttpMethodManagerImpl.getPostMethod:(40)":{"charCount":3529636,"lineCount":17826,"times":17826},"com.my.test.OrderManagerImpl.cancelOrder:(220)":{"charCount":2155,"lineCount":8,"times":8},"c.g.m.h.w.c.o.s.SubmitOrderProcess.placeAnOrder:(530)":{"charCount":16195,"lineCount":79,"times":79},"akka.remote.Remoting.apply$mcV$sp:(69)":{"charCount":2308,"lineCount":28,"times":2},"com.my.test.MemberManagerImpl.getUserMemberCart:(116)":{"charCount":319660,"lineCount":1453,"times":1453},"c.g.o.biz.dubbo.asp.ComHeadAspect.dubboContext:(97)":{"charCount":1151819,"lineCount":2325,"times":2325},"c.n.d.s.r.aws.ConfigClusterResolver.getClusterEndpoints:(43)":{"charCount":2822,"lineCount":17,"times":17},"c.g.m.h.w.c.cookie.CookieProcess.getUnionId:(60)":{"charCount":22533,"lineCount":111,"times":111},"com.my.test.OrderManagerImpl.achieveVerifyCode:(498)":{"charCount":5695,"lineCount":11,"times":11},"com.my.test.OrderConfigController.checkBeforeOrder:(706)":{"charCount":1815339,"lineCount":2170,"times":2170},"com.my.test.OrderManagerImpl.cancelOrder:(221)":{"charCount":2152,"lineCount":8,"times":8},"c.g.m.h.b.c.m.s.w.i.WeBusinessSearchManagerImpl.listWeBusinessUserInfoForPageQuery:(47)":{"charCount":3631,"lineCount":9,"times":9},"c.w.f.m.logging.ModuleLoggingImpl.writeExceptionByError:(77)":{"charCount":2777892,"lineCount":26948,"times":223},"c.g.m.h.b.c.m.h.e.i.ExtProcessRuleManagerImpl.getExtUserRule:(46)":{"charCount":17396,"lineCount":44,"times":44},"unknown:None":{"charCount":0,"lineCount":0,"times":0},"c.g.m.h.b.c.m.c.ComOrderStatusConsume.sendCoupon:(129)":{"charCount":24536,"lineCount":63,"times":63},"com.my.test.SomeTagInvoker.invoke$original$2eHCwhWc:(108)":{"charCount":135103698,"lineCount":1050624,"times":4649},"c.g.m.h.w.c.o.s.SubmitOrderProcess.checkBeforeSubmit:(228)":{"charCount":2268249,"lineCount":668,"times":668},"c.w.f.m.logging.ModuleLoggingImpl.writeExceptionByInfo:(64)":{"charCount":218481,"lineCount":2078,"times":22},"c.g.m.h.b.c.m.h.d.i.DepartmentManagerImpl.getHospDeptPlatformSpecialInfo:(40)":{"charCount":5109,"lineCount":17,"times":17},"com.my.test.OrderManagerImpl.order:(118)":{"charCount":61865,"lineCount":470,"times":2},"c.g.m.h.b.c.m.p.i.UserExtSafeManagerImpl.findByExtUserIdAndExtAppId:(42)":{"charCount":76532,"lineCount":111,"times":111},"com.my.test.impl.UserManagerImpl.listStatusByUserIds:(124)":{"charCount":419396,"lineCount":55,"times":55},"c.g.m.h.b.c.m.s.s.i.CommerceRecSearchMangerImpl.parseResultJsons:(114)":{"charCount":2324,"lineCount":6,"times":6},"c.g.m.h.b.c.m.c.ComOrderStatusConsume.doConsumeMessage:(85)":{"charCount":486795,"lineCount":419,"times":419},"c.g.m.h.b.c.m.w.i.WeBusinessManagerImpl.listBusinessInfoBySearch:(146)":{"charCount":2025,"lineCount":9,"times":9},"RocketmqRemoting.info:(95)":{"charCount":1110,"lineCount":7,"times":7},"c.g.m.h.w.c.o.s.SubmitOrderProcess.placeAnOrder:(494)":{"charCount":131227,"lineCount":627,"times":627},"c.w.f.m.l.dubbo.DubboLoggingFilter.invoke:(69)":{"charCount":64935683,"lineCount":511255,"times":2324}}};
     function getPercentOption(chartName, dataName, data){
         return {
             title: {
@@ -304,11 +314,12 @@
         };
     }
 
-    setUpCharts();
+    // setUpCharts();
 
 
     var app = angular.module('myApp', []);
-    app.controller('myCtrl', function($scope) {
+    app.controller('myCtrl', function($scope,$http) {
+        $scope.rawDataWindowShow = false;
 
         $scope.init = function() {
             $scope.rawDataWindowShow = false;
@@ -316,7 +327,29 @@
             $scope.basicInfo = rawData.basicInfo;
             setUpCharts();
         };
-        $scope.init();
+
+        let key = getQueryParam('key');
+        if(key){
+            $scope.basicInfo = {"fileName":"数据加载中,请稍后"}
+            $http({
+                method: 'GET',
+                url: 'https://api.e5cm.xyz/weapp/cache/get?key='+key
+            }).then(function successCallback(response) {
+                if(!response.data){
+                    rawData.basicInfo.fileName="数据不存在或已过期,显示演示数据"
+                }else {
+                    rawData = response.data;
+                }
+                $scope.init();
+            }, function errorCallback(response) {
+                rawData.basicInfo.fileName="数据加载失败,显示演示数据"
+                $scope.init();
+            });
+
+        }else{
+            $scope.init();
+        }
+
 
 
         $scope.openImportWindow = function() {
