@@ -175,7 +175,7 @@ finalData={"basicInfo":basicInfo,"pointCutData":pointCutData,"hourData":hourData
 #上传数据
 headers = {'Content-Type':'application/json'}
 rep = requests.post(url='https://api.e5cm.xyz/weapp/cache/setTemp', data=json.dumps(finalData), headers=headers)
-print('Please visit the url below to check analyze result(valid for 10 minutes): \nhttps://logcharts.github.io?key='+rep.text)
+print('Please visit the url below to check analyze result(valid for 24h): \nhttps://logcharts.github.io?key='+rep.text)
 
 # print(json.dumps(finalData))
 
