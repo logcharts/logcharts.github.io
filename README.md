@@ -6,7 +6,7 @@
 分析结果示例: https://logcharts.github.io
 
 使用方法:
-```aidl
+```shell
 wget https://logcharts.github.io/LogFileAnalizer.py
 python LogFileAnalizer.py your-project.log
 ```
