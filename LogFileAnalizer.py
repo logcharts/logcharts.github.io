@@ -12,7 +12,9 @@ patternList= (
     #module-hrs-register-web, 等
     "^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\s?(\[.*?\])\s?(\w*?)\s+([\w?\.$]+)(\(\d+\))? (.*)",
     #his-doc-work-service 等
-    "^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\s?(\[.*?\])\s?(\w*?)\s+([\w?\.$]+)(\(\d+\))?\s+(.*)"
+    "^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\s(\[.*?\])\s(\w*?)\s?([\w?\.$]+)(\(\d+\))?\s+(.*)",
+    #module-register-web 等
+    "^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3})\s(\[.*?\])\s(\w*?)\s?\[([\w?\.$]+)(\(\d+\))?\]\s+(.*)"
 )
 #时间戳转日期
 def TimeStampToTime(timestamp):
@@ -139,13 +141,13 @@ while logLine:
     charCount=len(logLine)
     matchResult = re.match(pattern, logLine)
     if matchResult:
-        # print "matchObj.group(1) : ", matchResult.group(1)
-        # print "matchObj.group(2) : ", matchResult.group(2)
-        # print "matchObj.group(3) : ", matchResult.group(3)
-        # print "matchObj.group(4) : ", matchResult.group(4)
-        # print "matchObj.group(5) : ", matchResult.group(5)
-        # print "matchObj.group(6) : ", matchResult.group(6)
-        # exit(0
+        print "matchObj.group(1) : ", matchResult.group(1)
+        print "matchObj.group(2) : ", matchResult.group(2)
+        print "matchObj.group(3) : ", matchResult.group(3)
+        print "matchObj.group(4) : ", matchResult.group(4)
+        print "matchObj.group(5) : ", matchResult.group(5)
+        print "matchObj.group(6) : ", matchResult.group(6)
+        exit(0)
 
         lastLogger=matchResult.group(4)
         lastLoggerLine=matchResult.group(5)
